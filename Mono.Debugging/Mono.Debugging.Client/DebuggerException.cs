@@ -32,9 +32,6 @@ namespace Mono.Debugging.Client
 	[Serializable]
 	public class DebuggerException: Exception
 	{
-		public DebuggerException (SerializationInfo info, StreamingContext ctx): base (info, ctx)
-		{
-		}
 		
 		public DebuggerException (string message): base (message)
 		{
