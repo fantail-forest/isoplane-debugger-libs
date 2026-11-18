@@ -176,7 +176,7 @@ namespace Mono.Debugger.Soft
 				}
 			} catch (CommandException ex) {
 				if (ex.ErrorCode == ErrorCode.INVALID_ARGUMENT)
-					throw new ArgumentException ("loc doesn't refer to a location in the current method of this thread.", "loc");
+					throw new ArgumentException (string.IsNullOrEmpty (ex.ErrorMessage) ? "loc doesn't refer to a location in the current method of this thread." : ex.ErrorMessage, "loc", ex);
 
 				throw;
 			}
