@@ -27,7 +27,7 @@ namespace Mono.Debugger.Soft
 			if (WaitHandle.WaitAny (new []{ vm.conn.DisconnectedEvent, fetchingEvent }) == 0) {
 				throw new VMDisconnectedException ();
 			}
-			return frames;
+			frameFetchFailure?.Throw (); return frames;
 		}
 
 		public long ElapsedTime () {
@@ -51,9 +51,9 @@ namespace Mono.Debugger.Soft
 					return;
 				cacheInvalid = false;
 				fetching = true;
-				fetchingEvent.Reset ();
+				fetchingEvent.Reset (); frameFetchFailure = null;
 			}
-			vm.conn.Thread_GetFrameInfo (id, 0, -1, (frame_info) => {
+			FetchFrameInfo ((frame_info) => {
 				var framesList = new List<StackFrame> ();
 				for (int i = 0; i < frame_info.Length; ++i) {
 					var frameInfo = (FrameInfo)frame_info [i];

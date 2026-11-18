@@ -2427,7 +2427,7 @@ namespace Mono.Debugger.Soft
 			return SendReceive (CommandSet.THREAD, (int)CmdThread.GET_ELAPSED_TIME, new PacketWriter (this).WriteId (id)).ReadLong ();
 		}
 
-		internal void Thread_GetFrameInfo (long id, int start_frame, int length, Action<FrameInfo[]> resultCallaback) {
+		internal void Thread_GetFrameInfo (long id, int start_frame, int length, Action<FrameInfo[]> resultCallaback, Action<Exception> errorCallback) {
 			Send (CommandSet.THREAD, (int)CmdThread.GET_FRAME_INFO, new PacketWriter (this).WriteId (id).WriteInt (start_frame).WriteInt (length), (res) => {
 				int count = res.ReadInt ();
 				var frames = new FrameInfo[count];
@@ -2440,7 +2440,7 @@ namespace Mono.Debugger.Soft
 					frames [i] = f;
 				}
 				resultCallaback (frames);
-			}, 1);
+			}, 1, errorCallback);
 		}
 
 		internal int Thread_GetState (long id) {
