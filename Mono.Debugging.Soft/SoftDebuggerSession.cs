@@ -2489,7 +2489,6 @@ namespace Mono.Debugging.Soft
 					}
 				}
 			}
-			TryResolvePendingBreakpoints ();
 		}
 
 		public void TryResolvePendingBreakpoints ()
