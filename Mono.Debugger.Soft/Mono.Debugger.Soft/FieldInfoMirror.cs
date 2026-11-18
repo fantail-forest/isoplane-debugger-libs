@@ -160,7 +160,9 @@ namespace Mono.Debugger.Soft
 		{
 			get
 			{
-				return (Attributes & FieldAttributes.NotSerialized) == FieldAttributes.NotSerialized;
+				#pragma warning disable SYSLIB0050 // Inspect guest metadata flags; no formatter serialization is performed.
+                return (Attributes & FieldAttributes.NotSerialized) == FieldAttributes.NotSerialized;
+#pragma warning restore SYSLIB0050
 			}
 		}
 

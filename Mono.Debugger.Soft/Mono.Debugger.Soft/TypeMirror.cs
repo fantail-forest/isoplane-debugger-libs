@@ -272,7 +272,9 @@ namespace Mono.Debugger.Soft
 
 		public bool IsSerializable {
 			get {
-				if ((Attributes & TypeAttributes.Serializable) != 0)
+				#pragma warning disable SYSLIB0050 // Inspect guest metadata flags; no formatter serialization is performed.
+                if ((Attributes & TypeAttributes.Serializable) != 0)
+#pragma warning restore SYSLIB0050
 					return true;
 
 				// FIXME:
