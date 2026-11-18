@@ -109,7 +109,7 @@ namespace Mono.Debugging.Soft
 
 		internal int StackVersion;
 
-		private readonly ITracer _tracer;
+		
 
 		public SoftDebuggerAdaptor Adaptor {
 			get; private set;
@@ -1445,7 +1445,7 @@ namespace Mono.Debugging.Soft
 							foreach (TypeMirror t in vm.GetTypes (exceptionType, false))
 								ProcessType (t);
 						}
-						catch (CommandException exc) {
+						catch (CommandException) {
 							if (outputOptions.ExceptionMessage)
 								OnDebuggerOutput (false, string.Format ("Error while parsing type ‘{0}’.\n", exceptionType));
 						}
@@ -1748,9 +1748,9 @@ namespace Mono.Debugging.Soft
 					req.AssemblyFilter = assemblyFilters;
 				try {
 					req.Enabled = true;
-				} catch (NotSupportedException e) {
+				} catch (NotSupportedException) {
 					if (vm.Version.AtLeast (2, 19)) //catch NotSupportedException thrown by old version of protocol
-						throw e;
+						throw;
 				}
 				currentRequest = req;
 				OnResumed ();
@@ -2392,7 +2392,7 @@ namespace Mono.Debugging.Soft
 				return asm.Location;
 			} catch (CommandException ex) {
 				if (ex.ErrorCode != ErrorCode.ERR_UNLOADED)
-					throw ex;
+					throw;
 				return null;
 			}
 		}
