@@ -1185,7 +1185,7 @@ namespace Mono.Debugging.Soft
 			var type = t as TypeMirror;
 			var tupleNames = GetTupleElementNames (objectSource, ctx);
 			while (type != null) {
-				var field = FindByName (type.GetFields (), f => MapTupleName(f.Name, tupleNames), name, ctx.CaseSensitive);
+				var field = FindByName (type.GetFields (), f => MapTupleName(f.Name, tupleNames), name, ctx.CaseSensitive) ?? FindByName (type.GetFields (), f => f.Name, name, ctx.CaseSensitive);
 
 				if (field != null && (field.IsStatic || co != null))
 					return new FieldValueReference (ctx, field, co, type);
