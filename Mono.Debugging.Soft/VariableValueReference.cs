@@ -32,7 +32,7 @@ using Mono.Debugger.Soft;
 
 namespace Mono.Debugging.Soft
 {
-	public class VariableValueReference : ValueReference
+	public partial class VariableValueReference : ValueReference
 	{
 		readonly LocalVariableBatch batch;
 		readonly LocalVariable variable;

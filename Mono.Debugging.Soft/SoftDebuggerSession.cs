@@ -58,7 +58,7 @@ using Microsoft.FileFormats.PE;
 
 namespace Mono.Debugging.Soft
 {
-	public class SoftDebuggerSession : DebuggerSession
+	public partial class SoftDebuggerSession : DebuggerSession
 	{
 		readonly Dictionary<AppDomainMirror, HashSet<AssemblyMirror>> domainAssembliesToUnload = new Dictionary<AppDomainMirror, HashSet<AssemblyMirror>> ();
 		readonly Dictionary<Tuple<TypeMirror, string>, MethodMirror[]> overloadResolveCache = new Dictionary<Tuple<TypeMirror, string>, MethodMirror[]> ();
