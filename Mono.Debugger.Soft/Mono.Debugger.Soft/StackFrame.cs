@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Mono.Debugger.Soft
 {
-	public class StackFrame : Mirror
+	public partial class StackFrame : Mirror
 	{
 		ThreadMirror thread;
 		AppDomainMirror domain;
@@ -72,9 +72,9 @@ namespace Mono.Debugger.Soft
 					if (il_offset == -1)
 						line_number = -1;
 					else
-						line_number = method.il_offset_to_line_number (il_offset, out src_file, out hash, out column_number, out end_line_number, out end_column_number);
+						line_number = MapFrameOffset (il_offset, out src_file, out hash, out column_number, out end_line_number, out end_column_number);
 
-					location = new Location (vm, Method, 0, il_offset, src_file != null ? src_file : method.SourceFile, line_number, column_number, end_line_number, end_column_number, hash);
+					location = new Location (vm, Method, 0, il_offset, src_file ?? FrameSource, line_number, column_number, end_line_number, end_column_number, hash);
 				}
 				return location;
 			}
@@ -236,7 +236,7 @@ namespace Mono.Debugger.Soft
 			if (Location.ILOffset == -1)
 				throw new AbsentInformationException ();
 
-			return Method.GetLocals ().Where (l => l.LiveRangeStart <= location.ILOffset && l.LiveRangeEnd >= location.ILOffset).ToList ();
+			return GetLocals ().Where (l => l.LiveRangeStart <= location.ILOffset && l.LiveRangeEnd >= location.ILOffset).ToList ();
 		}
 
 		public LocalVariable GetVisibleVariableByName (string name) {
@@ -246,7 +246,7 @@ namespace Mono.Debugger.Soft
 			if (Location.ILOffset == -1)
 				throw new AbsentInformationException ();
 
-			return Method.GetLocals ().Where (l => l.LiveRangeStart <= location.ILOffset && l.LiveRangeEnd >= location.ILOffset && l.Name == name).FirstOrDefault ();
+			return GetLocals ().Where (l => l.LiveRangeStart <= location.ILOffset && l.LiveRangeEnd >= location.ILOffset && l.Name == name).FirstOrDefault ();
 		}
 
 		public void ClearDebugInfoToTryToGetFromLoadedPdb ()

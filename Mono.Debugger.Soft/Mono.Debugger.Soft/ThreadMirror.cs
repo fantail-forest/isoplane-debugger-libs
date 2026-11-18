@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Mono.Debugger.Soft
 {
-	public class ThreadMirror : ObjectMirror
+	public partial class ThreadMirror : ObjectMirror
 	{
 		string name;
 		bool cacheInvalid = true;
@@ -27,7 +27,7 @@ namespace Mono.Debugger.Soft
 			if (WaitHandle.WaitAny (new []{ vm.conn.DisconnectedEvent, fetchingEvent }) == 0) {
 				throw new VMDisconnectedException ();
 			}
-			return frames;
+			frameFetchFailure?.Throw (); return frames;
 		}
 
 		public long ElapsedTime () {
@@ -51,9 +51,9 @@ namespace Mono.Debugger.Soft
 					return;
 				cacheInvalid = false;
 				fetching = true;
-				fetchingEvent.Reset ();
+				fetchingEvent.Reset (); frameFetchFailure = null;
 			}
-			vm.conn.Thread_GetFrameInfo (id, 0, -1, (frame_info) => {
+			FetchFrameInfo ((frame_info) => {
 				var framesList = new List<StackFrame> ();
 				for (int i = 0; i < frame_info.Length; ++i) {
 					var frameInfo = (FrameInfo)frame_info [i];
@@ -172,11 +172,10 @@ namespace Mono.Debugger.Soft
 				vm.conn.Thread_SetIP (id, loc.Method.Id, loc.ILOffset);
 				if (vm.conn.Version.AtLeast(2, 52)) {
 					InvalidateFrames();
-					FetchFrames(true);
 				}
 			} catch (CommandException ex) {
 				if (ex.ErrorCode == ErrorCode.INVALID_ARGUMENT)
-					throw new ArgumentException ("loc doesn't refer to a location in the current method of this thread.", "loc");
+					throw new ArgumentException (string.IsNullOrEmpty (ex.ErrorMessage) ? "loc doesn't refer to a location in the current method of this thread." : ex.ErrorMessage, "loc", ex);
 
 				throw;
 			}

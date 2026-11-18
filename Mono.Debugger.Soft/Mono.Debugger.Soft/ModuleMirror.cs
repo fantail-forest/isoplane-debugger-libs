@@ -3,7 +3,7 @@ using Mono.Debugger;
 
 namespace Mono.Debugger.Soft
 {
-	public class ModuleMirror : Mirror
+	public partial class ModuleMirror : Mirror
 	{
 		ModuleInfo info;
 		Guid guid;

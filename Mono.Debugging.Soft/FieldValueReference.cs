@@ -35,7 +35,7 @@ using System.Linq;
 
 namespace Mono.Debugging.Soft
 {
-	public class FieldValueReference: SoftValueReference
+	public partial class FieldValueReference: SoftValueReference
 	{
 		FieldInfoMirror field;
 		object obj;

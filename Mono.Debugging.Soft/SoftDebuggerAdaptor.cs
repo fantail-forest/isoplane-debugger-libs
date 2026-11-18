@@ -1066,7 +1066,7 @@ namespace Mono.Debugging.Soft
 						int idx;
 
 						if (int.TryParse (name.Substring (3), out idx))
-							local = cx.Frame.Method.GetLocals ().FirstOrDefault (loc => loc.Index == idx);
+							local = cx.Frame.GetLocals ().FirstOrDefault (loc => loc.Index == idx);
 					}
 				} else {
 					local = ctx.CaseSensitive
@@ -1107,7 +1107,7 @@ namespace Mono.Debugging.Soft
 
 		static VariableValueReference GetClosureReference (SoftEvaluationContext cx)
 		{
-			foreach (var local in cx.Frame.Method.GetLocals ()) {
+			foreach (var local in cx.Frame.GetLocals ()) {
 				if (IsClosureReferenceLocal (local)) {
 					return new VariableValueReference (cx, local.Name, local);
 				}
@@ -1185,7 +1185,7 @@ namespace Mono.Debugging.Soft
 			var type = t as TypeMirror;
 			var tupleNames = GetTupleElementNames (objectSource, ctx);
 			while (type != null) {
-				var field = FindByName (type.GetFields (), f => MapTupleName(f.Name, tupleNames), name, ctx.CaseSensitive);
+				var field = FindByName (type.GetFields (), f => MapTupleName(f.Name, tupleNames), name, ctx.CaseSensitive) ?? FindByName (type.GetFields (), f => f.Name, name, ctx.CaseSensitive);
 
 				if (field != null && (field.IsStatic || co != null))
 					return new FieldValueReference (ctx, field, co, type);
@@ -1558,7 +1558,7 @@ namespace Mono.Debugging.Soft
 			LocalVariable[] locals;
 
 			try {
-				locals = soft.Frame.Method.GetLocals ().Where (x => x.IsArg && !IsClosureReferenceLocal (x)).ToArray ();
+				locals = soft.Frame.GetLocals ().Where (x => x.IsArg && !IsClosureReferenceLocal (x)).ToArray ();
 			} catch (InvalidStackFrameException) {
 				yield break;
 			} catch (AbsentInformationException) {

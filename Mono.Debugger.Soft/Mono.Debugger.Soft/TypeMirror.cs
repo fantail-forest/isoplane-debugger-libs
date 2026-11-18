@@ -15,7 +15,7 @@ namespace Mono.Debugger.Soft
 	 * It might be better to make this a subclass of Type, but that could be
 	 * difficult as some of our methods like GetMethods () return Mirror objects.
 	 */
-	public class TypeMirror : Mirror, IInvokable
+	public partial class TypeMirror : Mirror, IInvokable
 	{
 		List<MethodMirror> methods;
 		AssemblyMirror assembly;
@@ -272,7 +272,9 @@ namespace Mono.Debugger.Soft
 
 		public bool IsSerializable {
 			get {
-				if ((Attributes & TypeAttributes.Serializable) != 0)
+				#pragma warning disable SYSLIB0050 // Inspect guest metadata flags; no formatter serialization is performed.
+                if ((Attributes & TypeAttributes.Serializable) != 0)
+#pragma warning restore SYSLIB0050
 					return true;
 
 				// FIXME:
@@ -728,7 +730,7 @@ namespace Mono.Debugger.Soft
 				cattrs = new CustomAttributeDataMirror [0];
 #endif
 
-			if (cattrs == null) {
+			if (cattrs == null || cattrs.Length != 0) {
 				CattrInfo[] info = vm.conn.Type_GetCustomAttributes (id, 0, false);
 				cattrs = CustomAttributeDataMirror.Create (vm, info);
 			}

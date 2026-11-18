@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Mono.Debugger.Soft
 {
-	public class VirtualMachine : Mirror
+	public partial class VirtualMachine : Mirror
 	{
 		Queue queue;
 		object queue_monitor;
