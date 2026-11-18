@@ -250,13 +250,13 @@ namespace Mono {
                 //   C    1-byte unsigned character
 		//   z8   string encoded as UTF8 with 1-byte null terminator
 		//   z6   string encoded as UTF16 with 2-byte null terminator
-		//   z7   string encoded as UTF7 with 1-byte null terminator
+
 		//   zb   string encoded as BigEndianUnicode with 2-byte null terminator
 		//   z3   string encoded as UTF32 with 4-byte null terminator
 		//   z4   string encoded as UTF32 big endian with 4-byte null terminator
 		//   $8   string encoded as UTF8
 		//   $6   string encoded as UTF16
-		//   $7   string encoded as UTF7
+
 		//   $b   string encoded as BigEndianUnicode
 		//   $3   string encoded as UTF32
 		//   $4   string encoded as UTF-32 big endian encoding
@@ -463,9 +463,7 @@ namespace Mono {
 					n = 2;
 					break;
 				case '7':
-					e = Encoding.UTF7;
-					n = 1;
-					break;
+					throw new NotSupportedException ("UTF-7 data conversion is not supported.");
 				case 'b':
 					e = Encoding.BigEndianUnicode;
 					n = 2;
@@ -670,9 +668,7 @@ namespace Mono {
 						n = 2;
 						break;
 					case '7':
-						e = Encoding.UTF7;
-						n = 1;
-						break;
+						throw new NotSupportedException ("UTF-7 data conversion is not supported.");
 					case 'b':
 						e = Encoding.BigEndianUnicode;
 						n = 2;
