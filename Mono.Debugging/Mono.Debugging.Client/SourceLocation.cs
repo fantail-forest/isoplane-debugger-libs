@@ -100,12 +100,21 @@ namespace Mono.Debugging.Client
 			}
 		}
 
-		public static List<byte[]> ComputeChecksums (string path, string algorithm)
+		private static HashAlgorithm CreateChecksumAlgorithm (string algorithm) => algorithm.ToUpperInvariant () switch {
+            "MD5" => MD5.Create (),
+            "SHA1" => SHA1.Create (),
+            "SHA256" => SHA256.Create (),
+            "SHA384" => SHA384.Create (),
+            "SHA512" => SHA512.Create (),
+            _ => throw new ArgumentException ("Unsupported source checksum algorithm: " + algorithm, nameof (algorithm))
+        };
+
+        public static List<byte[]> ComputeChecksums (string path, string algorithm)
 		{
 			using (var stream = File.OpenRead (path)) {
-				using (var hash = HashAlgorithm.Create (algorithm)) {
-					using (var dos = HashAlgorithm.Create (algorithm)) {
-						using (var unix = HashAlgorithm.Create (algorithm)) {
+				using (var hash = CreateChecksumAlgorithm (algorithm)) {
+					using (var dos = CreateChecksumAlgorithm (algorithm)) {
+						using (var unix = CreateChecksumAlgorithm (algorithm)) {
 							ComputeHashes (stream, hash, dos, unix);
 
 							var checksums = new List<byte[]> (3);
@@ -139,11 +148,11 @@ namespace Mono.Debugging.Client
 
 		static bool CheckHash (Stream stream, string algorithm, byte[] checksum)
 		{
-			using (var hash = HashAlgorithm.Create (algorithm)) {
+			using (var hash = CreateChecksumAlgorithm (algorithm)) {
 				int size = hash.HashSize / 8;
 
-				using (var dos = HashAlgorithm.Create (algorithm)) {
-					using (var unix = HashAlgorithm.Create (algorithm)) {
+				using (var dos = CreateChecksumAlgorithm (algorithm)) {
+					using (var unix = CreateChecksumAlgorithm (algorithm)) {
 						stream.Position = 0;
 
 						ComputeHashes (stream, hash, dos, unix);
