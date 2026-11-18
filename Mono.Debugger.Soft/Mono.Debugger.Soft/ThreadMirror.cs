@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Mono.Debugger.Soft
 {
-	public class ThreadMirror : ObjectMirror
+	public partial class ThreadMirror : ObjectMirror
 	{
 		string name;
 		bool cacheInvalid = true;

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Mono.Debugger.Soft
 {
-	public class StackFrame : Mirror
+	public partial class StackFrame : Mirror
 	{
 		ThreadMirror thread;
 		AppDomainMirror domain;

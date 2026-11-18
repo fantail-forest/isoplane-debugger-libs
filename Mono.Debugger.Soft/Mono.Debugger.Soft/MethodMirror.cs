@@ -10,7 +10,7 @@ using C = Mono.Cecil;
 
 namespace Mono.Debugger.Soft
 {
-	public class MethodMirror : Mirror
+	public partial class MethodMirror : Mirror
 	{
 		string name;
 		MethodInfo info;

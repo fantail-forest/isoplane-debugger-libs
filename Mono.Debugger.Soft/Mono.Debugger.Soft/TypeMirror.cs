@@ -15,7 +15,7 @@ namespace Mono.Debugger.Soft
 	 * It might be better to make this a subclass of Type, but that could be
 	 * difficult as some of our methods like GetMethods () return Mirror objects.
 	 */
-	public class TypeMirror : Mirror, IInvokable
+	public partial class TypeMirror : Mirror, IInvokable
 	{
 		List<MethodMirror> methods;
 		AssemblyMirror assembly;

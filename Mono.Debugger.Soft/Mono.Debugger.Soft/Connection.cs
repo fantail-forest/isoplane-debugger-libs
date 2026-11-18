@@ -442,7 +442,7 @@ namespace Mono.Debugger.Soft
 	/*
 	 * Represents the connection to the debuggee
 	 */
-	public abstract class Connection
+	public abstract partial class Connection
 	{
 		/*
 		 * The protocol and the packet format is based on JDWP, the differences 
