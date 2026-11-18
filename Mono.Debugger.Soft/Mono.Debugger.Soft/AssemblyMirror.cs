@@ -258,8 +258,6 @@ namespace Mono.Debugger.Soft
 			var pdbStream = new MemoryStream (pdbDelta);
 			MetadataReader pdbMetadataReaderParm = MetadataReaderProvider.FromPortablePdbStream (pdbStream).GetMetadataReader ();
 
-			TypeInfo typeInfo = null;
-			int methodIdxAsm = 1;
 			foreach (var entry in asmMetadataReaderParm.GetEditAndContinueLogEntries ()) {
 				if (entry.Operation == EditAndContinueOperation.AddField) {
 					var typeHandle = (TypeDefinitionHandle)entry.Handle;
