@@ -2311,7 +2311,7 @@ namespace Mono.Debugging.Soft
 			);
 
 			OnAssemblyLoaded (assembly);
-			DebugSymbolsManager.TryLoadSymbolFromSymbolServerIfNeeded (asm);
+			_ = LoadAssemblySymbolsAsync (asm);
 		}
 
 		void RegisterAssembly (AssemblyMirror asm)
