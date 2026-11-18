@@ -172,7 +172,6 @@ namespace Mono.Debugger.Soft
 				vm.conn.Thread_SetIP (id, loc.Method.Id, loc.ILOffset);
 				if (vm.conn.Version.AtLeast(2, 52)) {
 					InvalidateFrames();
-					FetchFrames(true);
 				}
 			} catch (CommandException ex) {
 				if (ex.ErrorCode == ErrorCode.INVALID_ARGUMENT)
