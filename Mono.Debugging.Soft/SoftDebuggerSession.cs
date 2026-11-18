@@ -2080,7 +2080,7 @@ namespace Mono.Debugging.Soft
 			if (dequeuing && HasExited)
 				return;
 
-			if (ResumeInternalUserBreak(es)) return;
+			if (ResumeInternalUserBreak(es) || ResumeRedirectedBreakpoint(es)) return;
             TargetEventType etype = TargetEventType.TargetStopped;
 			ObjectMirror exception = null;
 			BreakEvent breakEvent = null;
