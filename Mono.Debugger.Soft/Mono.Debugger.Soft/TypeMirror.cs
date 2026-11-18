@@ -728,7 +728,7 @@ namespace Mono.Debugger.Soft
 				cattrs = new CustomAttributeDataMirror [0];
 #endif
 
-			if (cattrs == null) {
+			if (cattrs == null || cattrs.Length != 0) {
 				CattrInfo[] info = vm.conn.Type_GetCustomAttributes (id, 0, false);
 				cattrs = CustomAttributeDataMirror.Create (vm, info);
 			}
